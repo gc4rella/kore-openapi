@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-.PHONY: help specs generate-sdk generate-sdk-all check-doc-alignment
+.PHONY: help specs generate-sdk generate-sdk-all
 
 help:
 	@echo "Targets:"
@@ -13,9 +13,6 @@ help:
 	@echo ""
 	@echo "  make generate-sdk-all GENERATOR=<name>"
 	@echo "      Generate the same client library for all specs"
-	@echo ""
-	@echo "  make check-doc-alignment"
-	@echo "      Compare local specs with documented endpoint snapshot"
 
 specs:
 	@./scripts/list-specs.sh
@@ -39,6 +36,3 @@ generate-sdk-all:
 	@while IFS= read -r spec_id; do \
 		./scripts/generate-sdk.sh --spec "$$spec_id" --generator "$(GENERATOR)" --output "generated/$$spec_id/$(GENERATOR)"; \
 	done < <(./scripts/list-specs.sh --ids)
-
-check-doc-alignment:
-	@./scripts/check-doc-alignment.sh
