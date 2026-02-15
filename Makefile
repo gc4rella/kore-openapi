@@ -1,10 +1,13 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-.PHONY: help specs generate-sdk generate-sdk-all
+.PHONY: help check-prereqs specs generate-sdk generate-sdk-all
 
 help:
 	@echo "Targets:"
+	@echo "  make check-prereqs"
+	@echo "      Validate required local tooling (make, bash, jq, and generator runtime)"
+	@echo ""
 	@echo "  make specs"
 	@echo "      List available OpenAPI specs from specs/catalog.json"
 	@echo ""
@@ -13,6 +16,23 @@ help:
 	@echo ""
 	@echo "  make generate-sdk-all GENERATOR=<name>"
 	@echo "      Generate the same client library for all specs"
+
+check-prereqs:
+	@echo "Checking prerequisites..."
+	@command -v make >/dev/null 2>&1 || { echo "Missing required tool: make"; exit 1; }
+	@command -v bash >/dev/null 2>&1 || { echo "Missing required tool: bash"; exit 1; }
+	@command -v jq >/dev/null 2>&1 || { echo "Missing required tool: jq"; exit 1; }
+	@if command -v docker >/dev/null 2>&1; then \
+		echo "Generator runtime: docker"; \
+	elif command -v openapi-generator-cli >/dev/null 2>&1; then \
+		echo "Generator runtime: openapi-generator-cli"; \
+	elif command -v npx >/dev/null 2>&1; then \
+		echo "Generator runtime: npx (@openapitools/openapi-generator-cli)"; \
+	else \
+		echo "Missing generator runtime: install Docker or openapi-generator-cli or Node.js+npx"; \
+		exit 1; \
+	fi
+	@echo "Prerequisites OK."
 
 specs:
 	@./scripts/list-specs.sh

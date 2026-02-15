@@ -2,28 +2,32 @@
 
 This repository includes a manifest-driven SDK generation workflow based on OpenAPI Generator.
 
-## 1. Discover Available Specs
+Use `make` targets as the public interface. The `scripts/` directory is implementation detail.
+
+## 1. Verify Prerequisites
 
 ```bash
-./scripts/list-specs.sh
+make check-prereqs
 ```
 
-To list IDs only:
+See `docs/prerequisites.md` for details.
+
+## 2. Discover Available Specs
 
 ```bash
-./scripts/list-specs.sh --ids
+make specs
 ```
 
-## 2. Generate a Library
+## 3. Generate One Library
 
 ```bash
-./scripts/generate-sdk.sh --spec <spec-id> --generator <generator-name>
+make generate-sdk SPEC=<spec-id> GENERATOR=<generator-name>
 ```
 
 Example:
 
 ```bash
-./scripts/generate-sdk.sh --spec supersim-v1 --generator typescript-fetch
+make generate-sdk SPEC=supersim-v1 GENERATOR=typescript-fetch
 ```
 
 Output defaults to:
@@ -32,47 +36,34 @@ Output defaults to:
 generated/<spec-id>/<generator-name>
 ```
 
-## 3. Common Options
+## 4. Common Options
 
 ```bash
-./scripts/generate-sdk.sh \
-  --spec webhook-v1 \
-  --generator python \
-  --output generated/webhook/python \
-  --package-name kore_webhook \
-  --additional-properties packageVersion=1.0.0,projectName=KoreWebhook
+make generate-sdk \
+  SPEC=webhook-v1 \
+  GENERATOR=python \
+  OUT=generated/webhook/python \
+  PACKAGE_NAME=kore_webhook \
+  ADDITIONAL_PROPERTIES=packageVersion=1.0.0,projectName=KoreWebhook
 ```
 
-Pass through raw generator flags after `--`:
+## 5. Generate the Same Library for All Specs
 
 ```bash
-./scripts/generate-sdk.sh \
-  --spec api-clients-client-v1 \
-  --generator go \
-  -- \
-  --git-user-id korewireless \
-  --git-repo-id kore-api-clients-go
+make generate-sdk-all GENERATOR=typescript-fetch
 ```
 
-## 4. Runtime Selection
+## 6. Runtime Selection
 
-`scripts/generate-sdk.sh` resolves runtime in this order:
+Runtime is selected automatically in this order:
 
 1. Docker (`openapitools/openapi-generator-cli:v7.12.0` by default)
 2. Local `openapi-generator-cli`
 3. `npx @openapitools/openapi-generator-cli`
 
-Override Docker image:
+To override Docker image for the underlying generator:
 
 ```bash
 OPENAPI_GENERATOR_IMAGE=openapitools/openapi-generator-cli:v7.13.0 \
-./scripts/generate-sdk.sh --spec iam-v1 --generator java
-```
-
-## 5. Makefile Shortcuts
-
-```bash
-make specs
-make generate-sdk SPEC=iam-v1 GENERATOR=java PACKAGE_NAME=kore-iam-client
-make generate-sdk-all GENERATOR=typescript-fetch
+make generate-sdk SPEC=iam-v1 GENERATOR=java
 ```

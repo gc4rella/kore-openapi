@@ -1,46 +1,30 @@
 # KORE OpenAPI
 
-OpenAPI specifications for KORE public APIs, with a standardized repository layout and tooling to:
-
-- discover available specs
-- generate SDK/client libraries from any spec
-
-## Repository Layout
-
-```text
-.
-├── specs/
-│   ├── catalog.json
-│   ├── api-clients/
-│   ├── iam/
-│   ├── programmable-wireless/
-│   ├── supersim/
-│   └── webhook/
-├── scripts/
-│   ├── generate-sdk.sh
-│   └── list-specs.sh
-├── docs/
-│   └── generating-sdks.md
-├── Makefile
-└── LICENSE
-```
+OpenAPI specifications for KORE public APIs, with a standardized repository layout and a simple `make`-based workflow for SDK generation.
 
 ## Quick Start
 
 ```bash
-# list all available spec IDs and source files
+# validate local tooling
+make check-prereqs
+
+# list available spec IDs and source files
 make specs
 
 # generate one SDK
 make generate-sdk SPEC=supersim-v1 GENERATOR=typescript-fetch
 
-# generate one SDK with a custom output folder
-make generate-sdk SPEC=webhook-v1 GENERATOR=python OUT=generated/webhook/python
+# generate the same SDK type for all specs
+make generate-sdk-all GENERATOR=typescript-fetch
 ```
 
-## SDK Generation
+## Documentation
 
-The generator script uses Docker (`openapitools/openapi-generator-cli`) when available.
-If Docker is not available, it falls back to local `openapi-generator-cli` or `npx @openapitools/openapi-generator-cli`.
+- Prerequisites: `docs/prerequisites.md`
+- SDK generation guide: `docs/generating-sdks.md`
+- Repository layout and conventions: `docs/repository-layout.md`
 
-Detailed usage and examples: `docs/generating-sdks.md`.
+## Notes
+
+- `Makefile` is the primary user interface.
+- `scripts/` contains internal implementation used by `make` targets.
