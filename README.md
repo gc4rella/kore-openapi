@@ -11,6 +11,9 @@ make check-prereqs
 # list available spec IDs and source files
 make specs
 
+# run API smoke checks for all cataloged specs
+make smoke
+
 # generate one SDK
 make generate-sdk SPEC=supersim-v1 GENERATOR=typescript-fetch
 
@@ -22,6 +25,7 @@ make generate-sdk-all GENERATOR=typescript-fetch
 
 - Prerequisites: `docs/prerequisites.md`
 - SDK generation guide: `docs/generating-sdks.md`
+- API smoke testing: `docs/smoke-testing.md`
 - Repository layout and conventions: `docs/repository-layout.md`
 
 ## Notes

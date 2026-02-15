@@ -7,6 +7,7 @@ Use this checklist before running repository commands.
 - `make`
 - `bash`
 - `jq`
+- `curl` (used by `make smoke`)
 
 ## OpenAPI Generator Runtime (choose one)
 

@@ -1,15 +1,18 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-.PHONY: help check-prereqs specs generate-sdk generate-sdk-all
+.PHONY: help check-prereqs specs smoke generate-sdk generate-sdk-all
 
 help:
 	@echo "Targets:"
 	@echo "  make check-prereqs"
-	@echo "      Validate required local tooling (make, bash, jq, and generator runtime)"
+	@echo "      Validate required local tooling (make, bash, jq, curl, and generator runtime)"
 	@echo ""
 	@echo "  make specs"
 	@echo "      List available OpenAPI specs from specs/catalog.json"
+	@echo ""
+	@echo "  make smoke [SPEC=<spec-id[,spec-id...]>] [STRICT=1] [DRY_RUN=1] [TIMEOUT=<seconds>]"
+	@echo "      Run per-spec API smoke checks using cataloged base URLs + inferred endpoints"
 	@echo ""
 	@echo "  make generate-sdk SPEC=<spec-id> GENERATOR=<name> [OUT=<output-path>] [PACKAGE_NAME=<name>] [ADDITIONAL_PROPERTIES=<k=v,...>]"
 	@echo "      Generate a client library for one spec"
@@ -22,6 +25,7 @@ check-prereqs:
 	@command -v make >/dev/null 2>&1 || { echo "Missing required tool: make"; exit 1; }
 	@command -v bash >/dev/null 2>&1 || { echo "Missing required tool: bash"; exit 1; }
 	@command -v jq >/dev/null 2>&1 || { echo "Missing required tool: jq"; exit 1; }
+	@command -v curl >/dev/null 2>&1 || { echo "Missing required tool: curl"; exit 1; }
 	@if command -v docker >/dev/null 2>&1; then \
 		echo "Generator runtime: docker"; \
 	elif command -v openapi-generator-cli >/dev/null 2>&1; then \
@@ -36,6 +40,14 @@ check-prereqs:
 
 specs:
 	@./scripts/list-specs.sh
+
+smoke:
+	@cmd=(./scripts/smoke-apis.sh); \
+	if [[ -n "$(SPEC)" ]]; then cmd+=(--spec "$(SPEC)"); fi; \
+	if [[ "$(STRICT)" == "1" || "$(STRICT)" == "true" ]]; then cmd+=(--strict); fi; \
+	if [[ "$(DRY_RUN)" == "1" || "$(DRY_RUN)" == "true" ]]; then cmd+=(--dry-run); fi; \
+	if [[ -n "$(TIMEOUT)" ]]; then cmd+=(--timeout "$(TIMEOUT)"); fi; \
+	"$${cmd[@]}"
 
 generate-sdk:
 	@if [[ -z "$(SPEC)" || -z "$(GENERATOR)" ]]; then \

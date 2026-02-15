@@ -1353,7 +1353,9 @@
           },
           "client_type": {
             "type": "string",
-            "enum": ["standard"],
+            "enum": [
+              "standard"
+            ],
             "description": "Type of the client. This will always be 'standard'."
           },
           "account_id": {

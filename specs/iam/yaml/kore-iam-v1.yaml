@@ -1,37 +1,27 @@
 openapi: 3.0.0
 info:
   title: IaM APIs
-  description: >-
-    These APIs facilitate the management of customer accounts and their
-    relationships. They support creating accounts, retrieving account
-    hierarchies, and managing platform-specific mappings for parent and
-    associated child accounts. Designed for flexibility and scalability, these
-    APIs ensure efficient handling of account-related data and relationships.
+  description: These APIs facilitate the management of customer accounts and their relationships. They support creating accounts, retrieving account hierarchies, and managing platform-specific mappings for parent and associated child accounts. Designed for flexibility and scalability, these APIs ensure efficient handling of account-related data and relationships.
   version: 1.0.0
 paths:
   /v1/platform_account_mappings:
     parameters:
-      - $ref: '#/components/parameters/AuthorizationHeader'
-      - $ref: '#/components/parameters/AcceptHeader'
-      - $ref: '#/components/parameters/ContentTypeHeader'
+    - $ref: '#/components/parameters/AuthorizationHeader'
+    - $ref: '#/components/parameters/AcceptHeader'
+    - $ref: '#/components/parameters/ContentTypeHeader'
     get:
       summary: Get Platform Account mappings
       tags:
-        - Accounts
-      description: >-
-        This endpoint retrieves the platform mappings for an account and its
-        child accounts.
+      - Accounts
+      description: This endpoint retrieves the platform mappings for an account and its child accounts.
       operationId: fetchAccountMappings
       parameters:
-        - name: account_id
-          description: >-
-            The account ID is a unique identifier of your account, which begins
-            with acct_. This optional filter parameter lets you get platforms
-            mapped to a specific account.
-          in: query
-          schema:
-            type: string
-            example: acct_xxx
+      - name: account_id
+        description: The account ID is a unique identifier of your account, which begins with acct_. This optional filter parameter lets you get platforms mapped to a specific account.
+        in: query
+        schema:
+          type: string
+          example: acct_xxx
       responses:
         '200':
           description: 200 response
@@ -72,9 +62,7 @@ paths:
               schema:
                 type: string
         '401':
-          description: >-
-            Credentials were not provided and are required to access this
-            resource
+          description: Credentials were not provided and are required to access this resource
           content:
             application/json:
               schema:
@@ -208,13 +196,13 @@ paths:
                 type: string
   /v1/accounts:
     parameters:
-      - $ref: '#/components/parameters/AuthorizationHeader'
-      - $ref: '#/components/parameters/AcceptHeader'
-      - $ref: '#/components/parameters/ContentTypeHeader'
+    - $ref: '#/components/parameters/AuthorizationHeader'
+    - $ref: '#/components/parameters/AcceptHeader'
+    - $ref: '#/components/parameters/ContentTypeHeader'
     post:
       summary: Create Child Account
       tags:
-        - Accounts
+      - Accounts
       description: This endpoint is used to create a child account.
       operationId: createChild
       requestBody:
@@ -263,9 +251,7 @@ paths:
               schema:
                 type: string
         '401':
-          description: >-
-            Credentials were not provided and are required to access this
-            resource
+          description: Credentials were not provided and are required to access this resource
           content:
             application/json:
               schema:
@@ -400,22 +386,17 @@ paths:
     get:
       summary: Get All Accounts
       tags:
-        - Accounts
-      description: >-
-        This endpoint retrieves the information for an account and its child
-        accounts.
+      - Accounts
+      description: This endpoint retrieves the information for an account and its child accounts.
       operationId: fetchAllAccounts
       parameters:
-        - name: account_id
-          in: query
-          description: >-
-            The account ID is a unique identifier of your account, which begins
-            with acct_. This optional filter parameter lets you get information
-            for a specific account.
-          schema:
-            type: string
-            example: acct_xxx
-          required: false
+      - name: account_id
+        in: query
+        description: The account ID is a unique identifier of your account, which begins with acct_. This optional filter parameter lets you get information for a specific account.
+        schema:
+          type: string
+          example: acct_xxx
+        required: false
       responses:
         '200':
           description: 200 response
@@ -456,9 +437,7 @@ paths:
               schema:
                 type: string
         '401':
-          description: >-
-            Credentials were not provided and are required to access this
-            resource
+          description: Credentials were not provided and are required to access this resource
           content:
             application/json:
               schema:
@@ -609,7 +588,7 @@ components:
           type: string
           description: Brief description of the account
       required:
-        - friendly_name
+      - friendly_name
     Account:
       type: object
       properties:
@@ -628,10 +607,10 @@ components:
         status:
           type: string
           enum:
-            - ACTIVE
-            - PENDING
-            - DEACTIVATED
-            - SUSPENDED
+          - ACTIVE
+          - PENDING
+          - DEACTIVATED
+          - SUSPENDED
           description: Status of the account
     Platform:
       type: object
@@ -645,7 +624,7 @@ components:
         platform:
           type: string
           enum:
-            - twilio
+          - twilio
           description: Platform Name
     ErrorResponse:
       type: object
@@ -697,9 +676,9 @@ components:
       schema:
         type: string
 security:
-  - {}
-  - Auth: []
+- {}
+- Auth: []
 x-hideTryItPanel: true
 servers:
-  - url: https://iam.api.korewireless.com
-    description: PRODUCTION URL
+- url: https://iam.api.korewireless.com
+  description: PRODUCTION URL

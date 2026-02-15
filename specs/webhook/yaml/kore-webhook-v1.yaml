@@ -1,10 +1,7 @@
----
 openapi: 3.0.3
 info:
   title: Webhook APIs
-  description: >-
-    This is the public Webhook API for creating, retrieving, and modifying
-    secrets.
+  description: This is the public Webhook API for creating, retrieving, and modifying secrets.
   termsOfService: https://pardot.korewireless.com/koremsa
   contact:
     name: KORE Support
@@ -15,28 +12,28 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 tags:
-  - name: Secrets
+- name: Secrets
 paths:
   /v1/secrets:
     post:
       summary: Create a new secret
       description: Creates a new secret with associated metadata.
       tags:
-        - Secrets
+      - Secrets
       operationId: createSecret
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-        - name: Accept
-          in: header
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -48,7 +45,7 @@ paths:
                   type: string
                   description: A user-friendly name for the secret.
               required:
-                - Name
+              - Name
       responses:
         '201':
           description: Secret created successfully
@@ -187,49 +184,45 @@ paths:
       summary: Retrieve a list of secrets
       description: Retrieves a list of secrets, optionally filtered by status.
       tags:
-        - Secrets
+      - Secrets
       operationId: getSecrets
       parameters:
-        - name: status
-          in: query
-          description: Filter secrets by their status.
-          required: false
-          schema:
-            type: string
-            example: active
-            enum:
-              - active
-              - pending
-        - name: page_number
-          in: query
-          description: >-
-            Optional Filter that indicates the current pagination index of the
-            response.
-          required: false
-          schema:
-            type: integer
-            example: 1
-        - name: page_size
-          in: query
-          description: >-
-            Optional Filter that indicates the total number of records included
-            in the response.
-          required: false
-          schema:
-            type: integer
-            example: 10
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-        - name: Accept
-          in: header
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
+      - name: status
+        in: query
+        description: Filter secrets by their status.
+        required: false
+        schema:
+          type: string
+          example: active
+          enum:
+          - active
+          - pending
+      - name: page_number
+        in: query
+        description: Optional Filter that indicates the current pagination index of the response.
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: page_size
+        in: query
+        description: Optional Filter that indicates the total number of records included in the response.
+        required: false
+        schema:
+          type: integer
+          example: 10
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
       responses:
         '200':
           description: A list of secrets
@@ -370,26 +363,26 @@ paths:
       description: Updates the details of an existing secret specified by `id`.
       operationId: modifySecret
       tags:
-        - Secrets
+      - Secrets
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: The unique identifier of the secret to be updated.
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-        - name: Accept
-          in: header
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        description: The unique identifier of the secret to be updated.
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -403,8 +396,8 @@ paths:
                 Status:
                   type: string
                   enum:
-                    - active
-                    - pending
+                  - active
+                  - pending
                   description: The status of the secret.
       responses:
         '200':
@@ -544,20 +537,18 @@ components:
   schemas:
     SecretCreated:
       allOf:
-        - $ref: '#/components/schemas/SecretResponse'
+      - $ref: '#/components/schemas/SecretResponse'
       type: object
       properties:
         secret:
           type: string
-          description: >-
-            the value of the secret created, this is generated and provided only
-            once during creation.
+          description: the value of the secret created, this is generated and provided only once during creation.
       required:
-        - id
-        - name
-        - secret
-        - status
-        - last_modified
+      - id
+      - name
+      - secret
+      - status
+      - last_modified
     SecretResponse:
       type: object
       properties:
@@ -577,16 +568,16 @@ components:
           type: string
           example: active
           enum:
-            - active
-            - pending
+          - active
+          - pending
         last_modified:
           type: string
           format: date-time
       required:
-        - id
-        - name
-        - status
-        - last_modified
+      - id
+      - name
+      - status
+      - last_modified
     PaginatedSecretResponse:
       type: object
       properties:
@@ -594,7 +585,7 @@ components:
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/SecretResponse'
+            - $ref: '#/components/schemas/SecretResponse'
             type: object
         meta_data:
           type: object
@@ -610,15 +601,13 @@ components:
               example: 1
             previous_page_url:
               type: string
-              example: >-
-                https://webhook.api.korewireless.com/v1/secrets?page_size=1&page_number=2
+              example: https://webhook.api.korewireless.com/v1/secrets?page_size=1&page_number=2
             next_page_url:
               type: string
-              example: >-
-                https://webhook.api.korewireless.com/v1/secrets?page_size=1&page_number=4
+              example: https://webhook.api.korewireless.com/v1/secrets?page_size=1&page_number=4
       required:
-        - data
-        - meta_data
+      - data
+      - meta_data
     ApiErrorResponse:
       type: object
       properties:
@@ -640,9 +629,9 @@ components:
           description: Internal Error Message Reference
           example: http//docs.korewireless.com/errors/30010
       required:
-        - code
-        - status
-        - message
+      - code
+      - status
+      - message
   securitySchemes:
     Auth:
       type: oauth2
@@ -651,8 +640,8 @@ components:
           tokenUrl: https://api.korewireless.com/api-services/v1/auth/token
           scopes: {}
 security:
-  - {}
-  - Auth: []
+- {}
+- Auth: []
 x-hideTryItPanel: true
 servers:
-  - url: https://webhook.api.korewireless.com
+- url: https://webhook.api.korewireless.com
